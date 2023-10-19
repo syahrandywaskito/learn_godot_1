@@ -65,6 +65,10 @@ ui_attack={
 ]
 }
 
+[physics]
+
+common/max_physics_steps_per_frame=10
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
