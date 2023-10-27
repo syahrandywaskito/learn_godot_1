@@ -1,24 +1,192 @@
-[gd_scene load_steps=4 format=3 uid="uid://bne2bn2r8g386"]
+[gd_scene load_steps=20 format=3 uid="uid://bne2bn2r8g386"]
 
-[ext_resource type="Script" path="res://Scenes/Player.gd" id="1_iwy77"]
+[ext_resource type="Script" path="res://Scripts/Player.gd" id="1_dluvx"]
+[ext_resource type="Texture2D" uid="uid://c5j00wy2rk72v" path="res://Assets/Kings and Pigs/Sprites/01-King Human/Run (78x58).png" id="4_2e23t"]
+[ext_resource type="Script" path="res://Scripts/CharacterStateMachine.gd" id="4_mggln"]
+[ext_resource type="Script" path="res://Scripts/GroundState.gd" id="5_8rjys"]
+[ext_resource type="Script" path="res://Scripts/AirState.gd" id="6_5igs0"]
 [ext_resource type="Texture2D" uid="uid://dprm5qpaawv4u" path="res://Assets/Kings and Pigs/Sprites/01-King Human/idle3.png" id="6_b64wj"]
+[ext_resource type="Script" path="res://Scripts/LandingState.gd" id="7_pjq8q"]
+[ext_resource type="Script" path="res://Scripts/StateDebugLabel.gd" id="8_4shma"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rbxc3"]
 size = Vector2(17, 20.8)
 
-[node name="Player" type="CharacterBody2D"]
-script = ExtResource("1_iwy77")
-jump_velocity = -170.0
+[sub_resource type="Animation" id="Animation_01y8u"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(0, -80)
-scale = Vector2(2.00627, 0.747544)
-zoom = Vector2(2.7, 2.7)
+[sub_resource type="Animation" id="Animation_8sa1j"]
+resource_name = "idle"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("6_b64wj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+}
+
+[sub_resource type="Animation" id="Animation_2spfq"]
+resource_name = "run"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_2e23t")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [8]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_n40fb"]
+_data = {
+"RESET": SubResource("Animation_01y8u"),
+"idle": SubResource("Animation_8sa1j"),
+"run": SubResource("Animation_2spfq")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_xnfyo"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fjtk4"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6yu5t"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_b6fa0"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_xnfyo")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_fjtk4")
+blend_point_1/pos = 1.0
+blend_point_2/node = SubResource("AnimationNodeAnimation_6yu5t")
+blend_point_2/pos = -1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_3d6ty"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_npxwl"]
+states/Move/node = SubResource("AnimationNodeBlendSpace1D_b6fa0")
+states/Move/position = Vector2(374, 100)
+transitions = ["Start", "Move", SubResource("AnimationNodeStateMachineTransition_3d6ty")]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_dluvx")
+speed = 260.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("6_b64wj")
 hframes = 11
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 3.4)
+position = Vector2(-1, 3)
 shape = SubResource("RectangleShape2D_rbxc3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+speed_scale = 1.2
+libraries = {
+"": SubResource("AnimationLibrary_n40fb")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_npxwl")
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Move/blend_position = 0.0654664
+
+[node name="CharacterStateMachine" type="Node" parent="." node_paths=PackedStringArray("character", "current_state")]
+script = ExtResource("4_mggln")
+character = NodePath("..")
+current_state = NodePath("Ground")
+
+[node name="Ground" type="Node" parent="CharacterStateMachine" node_paths=PackedStringArray("air_state")]
+script = ExtResource("5_8rjys")
+air_state = NodePath("../Air")
+
+[node name="Air" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("6_5igs0")
+
+[node name="Landing" type="Node" parent="CharacterStateMachine"]
+script = ExtResource("7_pjq8q")
+can_move = false
+
+[node name="StateDebugLabel" type="Label" parent="." node_paths=PackedStringArray("state_machine")]
+offset_left = -46.0
+offset_top = -42.0
+offset_right = 63.0
+offset_bottom = -16.0
+text = "State : "
+script = ExtResource("8_4shma")
+state_machine = NodePath("../CharacterStateMachine")
