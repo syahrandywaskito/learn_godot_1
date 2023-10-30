@@ -1,0 +1,69 @@
+[gd_scene load_steps=13 format=3 uid="uid://bh6lahmmt05p"]
+
+[ext_resource type="Script" path="res://Scenes/Candle.gd" id="1_4jr6j"]
+[ext_resource type="Texture2D" uid="uid://cnl6w4aqnm7fn" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/1.png" id="1_p4d6l"]
+[ext_resource type="Texture2D" uid="uid://coy7ax2h3n8x2" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/2.png" id="2_y0wrg"]
+[ext_resource type="Texture2D" uid="uid://daqpwscsvvj27" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/3.png" id="3_fyj3m"]
+[ext_resource type="Texture2D" uid="uid://wsp7jxkfqyec" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/4.png" id="4_1r30o"]
+[ext_resource type="Texture2D" uid="uid://bt78q663h3e6m" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/5.png" id="5_5db35"]
+[ext_resource type="Texture2D" uid="uid://doghxjpiujcsy" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/6.png" id="6_dhs62"]
+[ext_resource type="Texture2D" uid="uid://b4vhilxlc1o7p" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/7.png" id="7_vxg3d"]
+[ext_resource type="Texture2D" uid="uid://be127ds823gqa" path="res://Assets/Kings and Pigs/Sprites/7-Objects/6-Candle/8.png" id="8_dh8pd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_kv4gj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_p4d6l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_y0wrg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_fyj3m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1r30o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_5db35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_dhs62")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_vxg3d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dh8pd")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 10.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_cgf4s"]
+offsets = PackedFloat32Array(0.126087, 0.678261)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_h7c82"]
+gradient = SubResource("Gradient_cgf4s")
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="Candle" type="Node2D"]
+script = ExtResource("1_4jr6j")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_kv4gj")
+animation = &"idle"
+frame_progress = 0.618559
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1, -10)
+scale = Vector2(0.34375, 0.375)
+color = Color(0.937255, 0.537255, 0, 1)
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_h7c82")
+texture_scale = 1.5
