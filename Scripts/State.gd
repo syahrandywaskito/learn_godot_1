@@ -8,8 +8,12 @@ class_name State
 # State Class Property
 var character : CharacterBody2D
 var next_state : State
+var playback : AnimationNodeStateMachinePlayback
 
 # State Class Method can extend to child
+func state_process(_delta):
+	pass
+
 func state_input(_event : InputEvent):
 	pass
 

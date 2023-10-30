@@ -8,17 +8,11 @@ extends CharacterBody2D
 @onready var animation_tree : AnimationTree = $AnimationTree
 @onready var state_machine : CharacterStateMachine = $CharacterStateMachine
 
-# coyote time variable
-var coyote_time : float = 0.2
-var coyote_time_counter : float = 0.0
-
 # Normal variable
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction : Vector2 = Vector2.ZERO
-var animation_locked : bool = false
 
 func _ready():
-	# make animation tree active (true)
 	animation_tree.active = true
 
 func _process(_delta):
@@ -26,17 +20,6 @@ func _process(_delta):
 	update_facing_direction()
 
 func _physics_process(delta):
-	# coyote time 
-	if is_on_floor():
-		coyote_time_counter = coyote_time
-	else:
-		coyote_time_counter -= delta
-
-	# Handle Jump.
-	if Input.is_action_just_pressed("jump") and coyote_time_counter > 0.0:
-#		velocity.y = jump_velocity
-		pass
-
 	gravity_handler(delta)
 	move_direction_handler()
 	move_and_slide()

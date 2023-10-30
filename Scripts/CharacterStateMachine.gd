@@ -2,17 +2,25 @@ extends Node
 
 class_name CharacterStateMachine
 
+# get character from CharacterBody2D (player)
 @export var character : CharacterBody2D
+
+# get animation tree for animation playback
+@export var animation_tree : AnimationTree
+
+# get default current state (groundState)
 @export var current_state : State 
 
 var states : Array[State]
 
 func _ready():
+	# append available State Class to array states
 	for child in get_children():
 		if (child is State):
 			states.append(child)
 			
 			child.character  = character
+			child.playback = animation_tree["parameters/playback"]
 			
 		else:
 			push_warning("Child" + child.name + " is not State for CharacterStateMachine")
@@ -20,6 +28,8 @@ func _ready():
 func _physics_process(_delta):
 	if (current_state.next_state != null):
 		switch_state(current_state.next_state)
+	
+	current_state.state_process(_delta)
 
 func check_if_can_move():
 	return current_state.can_move
